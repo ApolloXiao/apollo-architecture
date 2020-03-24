@@ -1,10 +1,10 @@
 package com.apollo.architecture.ui.main;
 
-import androidx.lifecycle.ViewModel;
+import com.apollo.architecture.ui.base.BaseViewModel;
 
 import javax.inject.Inject;
 
-public class MainViewModel extends ViewModel {
+public class MainViewModel extends BaseViewModel {
 
     @Inject
     public MainViewModel(){

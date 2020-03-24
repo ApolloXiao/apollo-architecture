@@ -3,33 +3,37 @@ package com.apollo.architecture.ui.main;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModel;
 
 import com.apollo.architecture.R;
+import com.apollo.architecture.ui.base.BaseActivity;
 
-import javax.inject.Inject;
-
-import dagger.android.support.DaggerAppCompatActivity;
-
-public class MainActivity extends DaggerAppCompatActivity {
-
-    @Inject
-    ViewModelProvider.Factory factory;
+public class MainActivity extends BaseActivity {
 
     private MainViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mainViewModel = new ViewModelProvider(this, factory).get(MainViewModel.class);
         TextView textView = findViewById(R.id.text);
         textView.setText(mainViewModel.getText());
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.content,new MainFragment())
+                    .replace(R.id.content, new MainFragment())
                     .commitAllowingStateLoss();
         }
     }
+
+    @Override
+    protected int getContentViewId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected ViewModel initViewModel() {
+        mainViewModel = createViewModel(MainViewModel.class);
+        return mainViewModel;
+    }
+
 }

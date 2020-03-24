@@ -1,24 +1,16 @@
 package com.apollo.architecture.ui.main;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModel;
+
 import com.apollo.architecture.R;
+import com.apollo.architecture.ui.base.BaseFragment;
 
-import javax.inject.Inject;
-
-public class MainFragment extends Fragment {
-    @Inject
-    ViewModelProvider.Factory factory;
+public class MainFragment extends BaseFragment {
 
     private MainViewModel mainViewModel;
 
@@ -28,18 +20,20 @@ public class MainFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        textView = new TextView(getActivity());
-        return textView;
+    public int getContentViewId() {
+        return R.layout.fragment_main;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mainViewModel = new ViewModelProvider(requireActivity(),factory).get(MainViewModel.class);
+    public void initView(View view, @Nullable Bundle savedInstanceState) {
+        textView = view.findViewById(R.id.text);
         textView.setText(mainViewModel.getText());
+    }
+
+    @Override
+    protected ViewModel initViewModel() {
+        mainViewModel = createViewModel(MainViewModel.class, getActivity());
+        return mainViewModel;
     }
 }
