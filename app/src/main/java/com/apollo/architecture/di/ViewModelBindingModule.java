@@ -14,6 +14,6 @@ public abstract class ViewModelBindingModule {
     @Binds
     @IntoMap
     @ViewModelKey(MainViewModel.class)
-    abstract ViewModel bindInvoiceDetailViewModel(MainViewModel mainViewModel);
+    abstract ViewModel bindMainViewModel(MainViewModel mainViewModel);
 
 }

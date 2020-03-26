@@ -43,4 +43,5 @@ ext{
     daggerVersion = '2.27'
     constraintLayoutVersion = '1.1.3'
     retrofitVersion = '2.3.0'
+    okHttpLoggingInterceptorVersion = '3.8.0'
 }
