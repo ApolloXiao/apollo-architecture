@@ -3,10 +3,10 @@ package com.apollo.architecture.ui.main;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.apollo.architecture.R;
+import com.apollo.architecture.data.http.Callback;
 import com.apollo.architecture.data.model.UserInfo;
 import com.apollo.architecture.ui.base.BaseActivity;
 
@@ -26,13 +26,12 @@ public class MainActivity extends BaseActivity {
                     .replace(R.id.content, new MainFragment())
                     .commitAllowingStateLoss();
         }
-        mainViewModel.getUserInfoList().observe(this, new Observer<List<UserInfo>>() {
+        fetchData(mainViewModel.fetchPublicNumberList(), new Callback<List<UserInfo>>(mainViewModel) {
             @Override
-            public void onChanged(List<UserInfo> userInfo) {
+            public void onSuccess(List<UserInfo> userInfo) {
                 textView.setText(userInfo.get(0).getName());
             }
         });
-        mainViewModel.getList();
     }
 
     @Override

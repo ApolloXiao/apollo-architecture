@@ -1,21 +1,13 @@
 package com.apollo.architecture.ui.base;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class BaseViewModel extends ViewModel implements IViewModelAction{
     private MutableLiveData<BaseActionEvent> actionLiveData;
 
-    protected LifecycleOwner lifecycleOwner;
-
     public BaseViewModel(){
         actionLiveData = new MutableLiveData<>();
-    }
-
-    @Override
-    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
-        this.lifecycleOwner = lifecycleOwner;
     }
 
     @Override

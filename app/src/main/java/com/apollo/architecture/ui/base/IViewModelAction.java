@@ -1,11 +1,8 @@
 package com.apollo.architecture.ui.base;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 
 public interface IViewModelAction {
-
-    void setLifecycleOwner(LifecycleOwner lifecycleOwner);
 
     void startLoading();
 

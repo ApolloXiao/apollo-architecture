@@ -37,7 +37,15 @@ public class LiveDataCallAdapter<R> implements CallAdapter<R, LiveData<R>> {
                     call.enqueue(new Callback<R>() {
                         @Override
                         public void onResponse(@NonNull Call<R> call, @NonNull Response<R> response) {
-                            postValue(response.body());
+                            if (response.isSuccessful()) {
+                                postValue(response.body());
+                            } else {
+                                BaseRepositoryModel netResponse = new BaseRepositoryModel();
+                                netResponse.setErrorMsg(response.message());
+                                netResponse.setErrorCode(response.code());
+                                postValue((R) netResponse);
+                            }
+
                         }
 
                         @Override

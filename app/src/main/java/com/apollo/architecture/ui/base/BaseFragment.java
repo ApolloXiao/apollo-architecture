@@ -1,6 +1,7 @@
 package com.apollo.architecture.ui.base;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+
+import com.apollo.architecture.data.http.Callback;
+import com.apollo.architecture.data.model.BaseRepositoryModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +102,26 @@ public abstract class BaseFragment extends DaggerFragment {
         }
     }
 
+    protected <T> LiveData<T> fetchData(@NonNull LiveData<BaseRepositoryModel<T>> liveData, @NonNull Callback<T> callback) {
+        liveData.removeObservers(this);
+        MutableLiveData<T> data = new MutableLiveData<>();
+        liveData.observe(this, baseRepositoryModel -> {
+            if (baseRepositoryModel != null) {
+                if (baseRepositoryModel.getErrorCode() > 0 ||
+                        !TextUtils.isEmpty(baseRepositoryModel.getErrorMsg())) {
+                    callback.onError(baseRepositoryModel);
+                    return;
+                }
+                T t = baseRepositoryModel.getData();
+                if (t != null) {
+                    data.setValue(t);
+                    callback.onSuccess(t);
+                }
+            }
+        });
+        return data;
+    }
+
     private void initViewModelEvent() {
         List<ViewModel> viewModelList = initViewModelList();
         if (viewModelList != null && viewModelList.size() > 0) {
@@ -112,7 +138,6 @@ public abstract class BaseFragment extends DaggerFragment {
         for (ViewModel viewModel : viewModelList) {
             if (viewModel instanceof IViewModelAction) {
                 IViewModelAction viewModelAction = (IViewModelAction) viewModel;
-                viewModelAction.setLifecycleOwner(this);
                 viewModelAction.getActionLiveData().observe(this, baseActionEvent -> {
                     if (baseActionEvent != null) {
                         switch (baseActionEvent.getAction()) {

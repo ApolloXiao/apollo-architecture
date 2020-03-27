@@ -5,10 +5,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.apollo.architecture.R;
+import com.apollo.architecture.data.http.Callback;
 import com.apollo.architecture.data.model.UserInfo;
 import com.apollo.architecture.ui.base.BaseFragment;
 
@@ -32,13 +32,12 @@ public class MainFragment extends BaseFragment {
     @Override
     public void initView(View view, @Nullable Bundle savedInstanceState) {
         textView = view.findViewById(R.id.text);
-        mainViewModel.getUserInfoList().observe(this, new Observer<List<UserInfo>>() {
+        fetchData(mainViewModel.fetchPublicNumberList(), new Callback<List<UserInfo>>(mainViewModel) {
             @Override
-            public void onChanged(List<UserInfo> userInfo) {
+            public void onSuccess(List<UserInfo> userInfo) {
                 textView.setText(userInfo.get(0).getName());
             }
         });
-        mainViewModel.getList();
     }
 
     @Override

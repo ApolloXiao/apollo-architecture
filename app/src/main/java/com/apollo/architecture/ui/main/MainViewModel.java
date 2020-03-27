@@ -1,7 +1,8 @@
 package com.apollo.architecture.ui.main;
 
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 
+import com.apollo.architecture.data.model.BaseRepositoryModel;
 import com.apollo.architecture.data.model.UserInfo;
 import com.apollo.architecture.data.repository.UserRepository;
 import com.apollo.architecture.ui.base.BaseViewModel;
@@ -11,27 +12,15 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class MainViewModel extends BaseViewModel {
-    UserRepository repository;
-
-    private MutableLiveData<List<UserInfo>> userInfoList = new MutableLiveData<>();
+    private UserRepository repository;
 
     @Inject
     public MainViewModel(UserRepository repository) {
         this.repository = repository;
     }
 
-    public MutableLiveData<List<UserInfo>> getUserInfoList() {
-        return userInfoList;
-    }
-
-    public void getList() {
-        repository.getPublicNumberList().observe(lifecycleOwner, listBaseRepositoryModel -> {
-            if (listBaseRepositoryModel.getErrorCode() > 0) {
-                showToast(listBaseRepositoryModel.getErrorMsg());
-                return;
-            }
-            userInfoList.setValue(listBaseRepositoryModel.getData());
-        });
+    public LiveData<BaseRepositoryModel<List<UserInfo>>> fetchPublicNumberList() {
+        return repository.getPublicNumberList();
     }
 
 }
