@@ -10,7 +10,9 @@ import com.apollo.architecture.data.source.user.RemoteUserDataSource;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class UserRepository {
 
     private RemoteUserDataSource remoteUserDataSource;
