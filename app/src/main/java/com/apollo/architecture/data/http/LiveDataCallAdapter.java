@@ -44,6 +44,7 @@ public class LiveDataCallAdapter<R> implements CallAdapter<R, LiveData<R>> {
                         public void onFailure(@NonNull Call<R> call, @NonNull Throwable t) {
                             BaseRepositoryModel netResponse = new BaseRepositoryModel();
                             netResponse.setErrorMsg(t.getMessage());
+                            netResponse.setErrorCode(999999999);
                             postValue((R) netResponse);
                         }
                     });
