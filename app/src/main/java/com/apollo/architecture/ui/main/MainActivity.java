@@ -1,8 +1,10 @@
 package com.apollo.architecture.ui.main;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
+import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.ViewModel;
 
 import com.apollo.architecture.R;
@@ -20,6 +22,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TextView textView = findViewById(R.id.text);
+        Log.d("ApolloTest","Activity ObserverCount : " + ((LifecycleRegistry)getLifecycle()).getObserverCount());
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -32,6 +35,14 @@ public class MainActivity extends BaseActivity {
                 textView.setText(userInfo.get(0).getName());
             }
         });
+        Log.d("ApolloTest","Activity ObserverCount : " + ((LifecycleRegistry)getLifecycle()).getObserverCount());
+        textView.setOnClickListener(v -> fetchData(mainViewModel.fetchPublicNumberList(), new Callback<List<UserInfo>>(mainViewModel) {
+            @Override
+            public void onSuccess(List<UserInfo> userInfo) {
+                textView.setText(userInfo.get(0).getName());
+                Log.d("ApolloTest","Activity ObserverCount : " + ((LifecycleRegistry)getLifecycle()).getObserverCount());
+            }
+        }));
     }
 
     @Override

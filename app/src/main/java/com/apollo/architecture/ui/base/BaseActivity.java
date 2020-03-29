@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -28,6 +27,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
     ViewModelProvider.Factory factory;
 
     private AppCompatDialog loadingDialog;
+    private LiveData liveData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,9 +92,12 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
         finish();
     }
 
-    protected <T> LiveData<T> fetchData(@NonNull LiveData<BaseRepositoryModel<T>> liveData, @NonNull Callback<T> callback) {
-        liveData.removeObservers(this);
-        MutableLiveData<T> data = new MutableLiveData<>();
+    protected <T> void fetchData(@NonNull LiveData<BaseRepositoryModel<T>> liveData, @NonNull Callback<T> callback) {
+        if (this.liveData != null) {
+            this.liveData.removeObservers(this);
+            this.liveData = null;
+        }
+        this.liveData = liveData;
         liveData.observe(this, baseRepositoryModel -> {
             if (baseRepositoryModel != null) {
                 if (baseRepositoryModel.getErrorCode() > 0 ||
@@ -104,12 +107,10 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
                 }
                 T t = baseRepositoryModel.getData();
                 if (t != null) {
-                    data.setValue(t);
                     callback.onSuccess(t);
                 }
             }
         });
-        return data;
     }
 
     private void initViewModelEvent() {

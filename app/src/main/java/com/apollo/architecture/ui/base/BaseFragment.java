@@ -31,6 +31,7 @@ public abstract class BaseFragment extends DaggerFragment {
     ViewModelProvider.Factory factory;
 
     private AppCompatDialog loadingDialog;
+    private LiveData liveData;
 
     @Nullable
     @Override
@@ -103,7 +104,11 @@ public abstract class BaseFragment extends DaggerFragment {
     }
 
     protected <T> LiveData<T> fetchData(@NonNull LiveData<BaseRepositoryModel<T>> liveData, @NonNull Callback<T> callback) {
-        liveData.removeObservers(this);
+        if (this.liveData != null) {
+            this.liveData.removeObservers(this);
+            this.liveData = null;
+        }
+        this.liveData = liveData;
         MutableLiveData<T> data = new MutableLiveData<>();
         liveData.observe(this, baseRepositoryModel -> {
             if (baseRepositoryModel != null) {
