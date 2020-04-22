@@ -1,7 +1,6 @@
 package com.apollo.architecture.ui.base;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
-
-import com.apollo.architecture.model.api.Callback;
-import com.apollo.architecture.model.bean.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,30 +96,6 @@ public abstract class BaseFragment extends DaggerFragment {
         if (getActivity() != null) {
             Toast.makeText(getActivity(), getString(resId), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    protected <T> LiveData<T> fetchData(@NonNull LiveData<Response<T>> liveData, @NonNull Callback<T> callback) {
-        if (this.liveData != null) {
-            this.liveData.removeObservers(this);
-            this.liveData = null;
-        }
-        this.liveData = liveData;
-        MutableLiveData<T> data = new MutableLiveData<>();
-        liveData.observe(this, baseRepositoryModel -> {
-            if (baseRepositoryModel != null) {
-                if (baseRepositoryModel.getErrorCode() > 0 ||
-                        !TextUtils.isEmpty(baseRepositoryModel.getErrorMsg())) {
-                    callback.onError(baseRepositoryModel);
-                    return;
-                }
-                T t = baseRepositoryModel.getData();
-                if (t != null) {
-                    data.setValue(t);
-                    callback.onSuccess(t);
-                }
-            }
-        });
-        return data;
     }
 
     private void initViewModelEvent() {

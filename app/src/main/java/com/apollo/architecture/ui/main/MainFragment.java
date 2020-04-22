@@ -1,20 +1,14 @@
 package com.apollo.architecture.ui.main;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.ViewModel;
 
 import com.apollo.architecture.R;
-import com.apollo.architecture.model.api.Callback;
-import com.apollo.architecture.model.bean.UserInfo;
 import com.apollo.architecture.ui.base.BaseFragment;
-
-import java.util.List;
 
 public class MainFragment extends BaseFragment {
 
@@ -34,21 +28,13 @@ public class MainFragment extends BaseFragment {
     @Override
     public void initView(View view, @Nullable Bundle savedInstanceState) {
         textView = view.findViewById(R.id.text);
-        Log.d("ApolloTest","Fragment ObserverCount : " + ((LifecycleRegistry)getLifecycle()).getObserverCount());
-        fetchData(mainViewModel.fetchPublicNumberList(), new Callback<List<UserInfo>>(mainViewModel) {
-            @Override
-            public void onSuccess(List<UserInfo> userInfo) {
-                textView.setText(userInfo.get(0).getName());
+        mainViewModel.getArticleList().observe(this, articles -> {
+            if (!articles.isEmpty()){
+                textView.setText(articles.get(0).getName());
             }
         });
-        Log.d("ApolloTest","Fragment ObserverCount : " + ((LifecycleRegistry)getLifecycle()).getObserverCount());
-        textView.setOnClickListener(v -> fetchData(mainViewModel.fetchPublicNumberList(), new Callback<List<UserInfo>>(mainViewModel) {
-            @Override
-            public void onSuccess(List<UserInfo> userInfo) {
-                textView.setText(userInfo.get(0).getName());
-                Log.d("ApolloTest","Fragment ObserverCount : " + ((LifecycleRegistry)getLifecycle()).getObserverCount());
-            }
-        }));
+        mainViewModel.fetchUserInfoList();
+        textView.setOnClickListener(v -> mainViewModel.fetchUserInfoList());
     }
 
     @Override

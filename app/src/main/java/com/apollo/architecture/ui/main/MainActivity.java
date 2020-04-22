@@ -1,15 +1,13 @@
 package com.apollo.architecture.ui.main;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
-import androidx.lifecycle.LifecycleRegistry;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.apollo.architecture.R;
-import com.apollo.architecture.model.api.Callback;
-import com.apollo.architecture.model.bean.UserInfo;
+import com.apollo.architecture.model.bean.Article;
 import com.apollo.architecture.ui.base.BaseActivity;
 
 import java.util.List;
@@ -22,27 +20,19 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TextView textView = findViewById(R.id.text);
-        Log.d("ApolloTest","Activity ObserverCount : " + ((LifecycleRegistry)getLifecycle()).getObserverCount());
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content, new MainFragment())
                     .commitAllowingStateLoss();
         }
-        fetchData(mainViewModel.fetchPublicNumberList(), new Callback<List<UserInfo>>(mainViewModel) {
-            @Override
-            public void onSuccess(List<UserInfo> userInfo) {
-                textView.setText(userInfo.get(0).getName());
+        mainViewModel.getArticleList().observe(this, articles -> {
+            if (!articles.isEmpty()) {
+                textView.setText(articles.get(0).getName());
             }
         });
-        Log.d("ApolloTest","Activity ObserverCount : " + ((LifecycleRegistry)getLifecycle()).getObserverCount());
-        textView.setOnClickListener(v -> fetchData(mainViewModel.fetchPublicNumberList(), new Callback<List<UserInfo>>(mainViewModel) {
-            @Override
-            public void onSuccess(List<UserInfo> userInfo) {
-                textView.setText(userInfo.get(0).getName());
-                Log.d("ApolloTest","Activity ObserverCount : " + ((LifecycleRegistry)getLifecycle()).getObserverCount());
-            }
-        }));
+        mainViewModel.fetchUserInfoList();
+        textView.setOnClickListener(v -> mainViewModel.fetchUserInfoList());
     }
 
     @Override

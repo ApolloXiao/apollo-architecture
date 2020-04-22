@@ -1,18 +1,13 @@
 package com.apollo.architecture.ui.base;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.apollo.architecture.model.api.Callback;
-import com.apollo.architecture.model.bean.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,27 +85,6 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
     protected void finishWithResult() {
         setResult(RESULT_OK);
         finish();
-    }
-
-    protected <T> void fetchData(@NonNull LiveData<Response<T>> liveData, @NonNull Callback<T> callback) {
-        if (this.liveData != null) {
-            this.liveData.removeObservers(this);
-            this.liveData = null;
-        }
-        this.liveData = liveData;
-        liveData.observe(this, baseRepositoryModel -> {
-            if (baseRepositoryModel != null) {
-                if (baseRepositoryModel.getErrorCode() > 0 ||
-                        !TextUtils.isEmpty(baseRepositoryModel.getErrorMsg())) {
-                    callback.onError(baseRepositoryModel);
-                    return;
-                }
-                T t = baseRepositoryModel.getData();
-                if (t != null) {
-                    callback.onSuccess(t);
-                }
-            }
-        });
     }
 
     private void initViewModelEvent() {

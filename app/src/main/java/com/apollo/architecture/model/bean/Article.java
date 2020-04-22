@@ -1,6 +1,6 @@
 package com.apollo.architecture.model.bean;
 
-public class UserInfo {
+public class Article {
     private String name;
     private int order;
 

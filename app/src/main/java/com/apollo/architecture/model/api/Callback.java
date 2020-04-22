@@ -10,7 +10,7 @@ public abstract class Callback<T> {
        this.baseViewModel = baseViewModel;
    }
    public abstract void onSuccess(T t);
-   public void onError(Response<T> response){
+   public void onError(Response response){
        //这里面对401等code作不同的逻辑处理
        if (baseViewModel!=null) {
            baseViewModel.showToast(response.getErrorMsg());
