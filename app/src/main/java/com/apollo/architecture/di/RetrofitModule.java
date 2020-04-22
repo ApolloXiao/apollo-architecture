@@ -1,9 +1,8 @@
 package com.apollo.architecture.di;
 
 import com.apollo.architecture.BuildConfig;
-import com.apollo.architecture.model.api.WanService;
 import com.apollo.architecture.model.api.HttpLoggingInterceptor;
-import com.apollo.architecture.model.http.LiveDataCallAdapterFactory;
+import com.apollo.architecture.model.api.WanService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -51,7 +50,6 @@ public class RetrofitModule {
                 .baseUrl(baseUrl)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
                 .build();
     }
 
