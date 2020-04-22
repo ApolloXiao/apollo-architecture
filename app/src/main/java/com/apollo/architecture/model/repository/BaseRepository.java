@@ -10,29 +10,14 @@ public class BaseRepository {
     public final static int CODE_ERROR_DEFAULT = -999999;
     public final static int CODE_ERROR_EMPTY_RESULT = -888888;
 
-    protected  <T> void executeRes(Call<T> call, com.apollo.architecture.model.api.Callback<T> callback) {
+    protected <T> void executeRes(Call<T> call, com.apollo.architecture.model.api.Callback<T> callback) {
         if (call == null) return;
         call.enqueue(new Callback<T>() {
             @Override
             public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
                 T body = response.body();
                 if (response.isSuccessful() && body != null) {
-                    if (body instanceof com.apollo.architecture.model.bean.Response) {
-                        com.apollo.architecture.model.bean.Response result = (com.apollo.architecture.model.bean.Response) body;
-                        if (result.getErrorCode() == 0) {
-                            if (result.getData() != null) {
-                                callback.onSuccess(body);
-                            } else {
-                                handelErrorRes(callback, CODE_ERROR_EMPTY_RESULT, "Response Data is null");
-                            }
-                        } else {
-                            handelErrorRes(callback, result.getErrorCode(), result.getErrorMsg());
-                        }
-                        return;
-                    }
-                    if (callback != null) {
-                        callback.onSuccess(body);
-                    }
+                    handleSuccessRes(body, callback);
                 } else {
                     if (callback != null) {
                         handelErrorRes(callback, response.code(), response.message());
@@ -45,6 +30,27 @@ public class BaseRepository {
                 handelErrorRes(callback, CODE_ERROR_DEFAULT, t.getMessage());
             }
         });
+    }
+
+    private <T> void handleSuccessRes(T body, com.apollo.architecture.model.api.Callback<T> callback) {
+        if (body instanceof com.apollo.architecture.model.bean.Response) {
+            com.apollo.architecture.model.bean.Response result = (com.apollo.architecture.model.bean.Response) body;
+            if (result.getErrorCode() != 0) {
+                handelErrorRes(callback, result.getErrorCode(), result.getErrorMsg());
+                return;
+            }
+            if (result.getData() == null) {
+                handelErrorRes(callback, CODE_ERROR_EMPTY_RESULT, "Response Data is null");
+                return;
+            }
+            if (callback != null){
+                callback.onSuccess(body);
+                return;
+            }
+        }
+        if (callback != null) {
+            callback.onSuccess(body);
+        }
     }
 
     private void handelErrorRes(com.apollo.architecture.model.api.Callback callback,
