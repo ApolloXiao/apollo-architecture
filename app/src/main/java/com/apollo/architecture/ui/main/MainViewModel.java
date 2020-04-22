@@ -2,9 +2,9 @@ package com.apollo.architecture.ui.main;
 
 import androidx.lifecycle.LiveData;
 
-import com.apollo.architecture.data.model.BaseRepositoryModel;
-import com.apollo.architecture.data.model.UserInfo;
-import com.apollo.architecture.data.repository.UserRepository;
+import com.apollo.architecture.model.bean.Response;
+import com.apollo.architecture.model.bean.UserInfo;
+import com.apollo.architecture.model.repository.UserRepository;
 import com.apollo.architecture.ui.base.BaseViewModel;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class MainViewModel extends BaseViewModel {
         this.repository = repository;
     }
 
-    public LiveData<BaseRepositoryModel<List<UserInfo>>> fetchPublicNumberList() {
+    public LiveData<Response<List<UserInfo>>> fetchPublicNumberList() {
         return repository.getPublicNumberList();
     }
 

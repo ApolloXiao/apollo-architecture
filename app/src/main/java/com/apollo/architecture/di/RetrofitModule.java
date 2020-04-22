@@ -1,9 +1,9 @@
 package com.apollo.architecture.di;
 
 import com.apollo.architecture.BuildConfig;
-import com.apollo.architecture.data.api.Api;
-import com.apollo.architecture.data.http.HttpLoggingInterceptor;
-import com.apollo.architecture.data.http.LiveDataCallAdapterFactory;
+import com.apollo.architecture.model.api.WanService;
+import com.apollo.architecture.model.api.HttpLoggingInterceptor;
+import com.apollo.architecture.model.http.LiveDataCallAdapterFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,13 +27,13 @@ public class RetrofitModule {
     @Provides
     @Singleton
     Retrofit provideRetrofit(OkHttpClient okHttpClient) {
-        return getRetrofit(okHttpClient, Api.HOST);
+        return getRetrofit(okHttpClient, WanService.HOST);
     }
 
     @Provides
     @Singleton
-    Api provideApi(Retrofit retrofit) {
-        return retrofit.create(Api.class);
+    WanService provideApi(Retrofit retrofit) {
+        return retrofit.create(WanService.class);
     }
 
 

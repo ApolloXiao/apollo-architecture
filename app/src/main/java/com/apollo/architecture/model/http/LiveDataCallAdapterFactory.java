@@ -1,10 +1,10 @@
-package com.apollo.architecture.data.http;
+package com.apollo.architecture.model.http;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
-import com.apollo.architecture.data.model.BaseRepositoryModel;
+import com.apollo.architecture.model.bean.Response;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
@@ -25,7 +25,7 @@ public class LiveDataCallAdapterFactory extends CallAdapter.Factory {
             return null;
         }
         Type observableType = getParameterUpperBound(0, (ParameterizedType) returnType);
-        if (getRawType(observableType) != BaseRepositoryModel.class) {
+        if (getRawType(observableType) != Response.class) {
             throw new IllegalArgumentException("type must be a NetResponse");
         }
         if (!(observableType instanceof ParameterizedType)) {

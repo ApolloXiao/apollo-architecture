@@ -11,8 +11,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.apollo.architecture.data.http.Callback;
-import com.apollo.architecture.data.model.BaseRepositoryModel;
+import com.apollo.architecture.model.api.Callback;
+import com.apollo.architecture.model.bean.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +92,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
         finish();
     }
 
-    protected <T> void fetchData(@NonNull LiveData<BaseRepositoryModel<T>> liveData, @NonNull Callback<T> callback) {
+    protected <T> void fetchData(@NonNull LiveData<Response<T>> liveData, @NonNull Callback<T> callback) {
         if (this.liveData != null) {
             this.liveData.removeObservers(this);
             this.liveData = null;

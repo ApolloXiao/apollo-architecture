@@ -1,4 +1,4 @@
-package com.apollo.architecture.data.model;
+package com.apollo.architecture.model.bean;
 
 public class UserInfo {
     private String name;

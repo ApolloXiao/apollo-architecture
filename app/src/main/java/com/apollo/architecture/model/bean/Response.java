@@ -1,6 +1,6 @@
-package com.apollo.architecture.data.model;
+package com.apollo.architecture.model.bean;
 
-public class BaseRepositoryModel<T> {
+public class Response<T> {
    private T data;
    private int errorCode;
    private String errorMsg;

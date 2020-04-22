@@ -8,8 +8,8 @@ import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.ViewModel;
 
 import com.apollo.architecture.R;
-import com.apollo.architecture.data.http.Callback;
-import com.apollo.architecture.data.model.UserInfo;
+import com.apollo.architecture.model.api.Callback;
+import com.apollo.architecture.model.bean.UserInfo;
 import com.apollo.architecture.ui.base.BaseActivity;
 
 import java.util.List;

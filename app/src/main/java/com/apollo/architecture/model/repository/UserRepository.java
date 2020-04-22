@@ -1,11 +1,11 @@
-package com.apollo.architecture.data.repository;
+package com.apollo.architecture.model.repository;
 
 import androidx.lifecycle.LiveData;
 
-import com.apollo.architecture.data.model.BaseRepositoryModel;
-import com.apollo.architecture.data.model.UserInfo;
-import com.apollo.architecture.data.source.user.LocalUserDataSource;
-import com.apollo.architecture.data.source.user.RemoteUserDataSource;
+import com.apollo.architecture.model.bean.Response;
+import com.apollo.architecture.model.bean.UserInfo;
+import com.apollo.architecture.model.source.user.LocalUserDataSource;
+import com.apollo.architecture.model.source.user.RemoteUserDataSource;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class UserRepository {
 
     }
 
-    public LiveData<BaseRepositoryModel<List<UserInfo>>> getPublicNumberList() {
+    public LiveData<Response<List<UserInfo>>> getPublicNumberList() {
         return remoteUserDataSource.getPublicNumberList();
     }
 }

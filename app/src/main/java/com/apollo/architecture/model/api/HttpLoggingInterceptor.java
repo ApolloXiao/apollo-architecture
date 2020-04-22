@@ -1,4 +1,4 @@
-package com.apollo.architecture.data.http;
+package com.apollo.architecture.model.api;
 
 /*
  * Copyright (C) 2015 Square, Inc.

@@ -16,8 +16,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
-import com.apollo.architecture.data.http.Callback;
-import com.apollo.architecture.data.model.BaseRepositoryModel;
+import com.apollo.architecture.model.api.Callback;
+import com.apollo.architecture.model.bean.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +103,7 @@ public abstract class BaseFragment extends DaggerFragment {
         }
     }
 
-    protected <T> LiveData<T> fetchData(@NonNull LiveData<BaseRepositoryModel<T>> liveData, @NonNull Callback<T> callback) {
+    protected <T> LiveData<T> fetchData(@NonNull LiveData<Response<T>> liveData, @NonNull Callback<T> callback) {
         if (this.liveData != null) {
             this.liveData.removeObservers(this);
             this.liveData = null;

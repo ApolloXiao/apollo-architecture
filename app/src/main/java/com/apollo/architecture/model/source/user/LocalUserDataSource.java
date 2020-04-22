@@ -1,9 +1,9 @@
-package com.apollo.architecture.data.source.user;
+package com.apollo.architecture.model.source.user;
 
 import androidx.lifecycle.LiveData;
 
-import com.apollo.architecture.data.model.BaseRepositoryModel;
-import com.apollo.architecture.data.model.UserInfo;
+import com.apollo.architecture.model.bean.Response;
+import com.apollo.architecture.model.bean.UserInfo;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class LocalUserDataSource implements UserDataSource {
     }
 
     @Override
-    public LiveData<BaseRepositoryModel<List<UserInfo>>> getPublicNumberList() {
+    public LiveData<Response<List<UserInfo>>> getPublicNumberList() {
         return null;
     }
 }

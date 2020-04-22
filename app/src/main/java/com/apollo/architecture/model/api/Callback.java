@@ -1,6 +1,6 @@
-package com.apollo.architecture.data.http;
+package com.apollo.architecture.model.api;
 
-import com.apollo.architecture.data.model.BaseRepositoryModel;
+import com.apollo.architecture.model.bean.Response;
 import com.apollo.architecture.ui.base.BaseViewModel;
 
 public abstract class Callback<T> {
@@ -10,10 +10,10 @@ public abstract class Callback<T> {
        this.baseViewModel = baseViewModel;
    }
    public abstract void onSuccess(T t);
-   public void onError(BaseRepositoryModel<T> baseRepositoryModel){
+   public void onError(Response<T> response){
        //这里面对401等code作不同的逻辑处理
        if (baseViewModel!=null) {
-           baseViewModel.showToast(baseRepositoryModel.getErrorMsg());
+           baseViewModel.showToast(response.getErrorMsg());
        }
    }
 }
