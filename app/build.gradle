@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -20,6 +23,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled true
+    }
+
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -31,24 +39,34 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     //app
-    implementation "androidx.appcompat:appcompat:$androidXVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+    implementation "androidx.appcompat:appcompat:$androidx_version"
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
     //test
-    testImplementation "junit:junit:${junitVersion}"
-    androidTestImplementation "androidx.test.ext:junit:$androidXTestExtVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-
-    //dagger
-    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
-    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test.ext:junit:$androidx_test_ext_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 
     //retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     //okHttpLoggingInterceptorVersion
-    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLoggingInterceptorVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttp_logging_interceptor_version"
+
+    //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.core:core-ktx:$androidx_core_version"
+
+    //koin
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+
+    //kotlin ViewModel & LiveData
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    //kotlin 协程
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
 
 }
