@@ -3,6 +3,7 @@ package com.apollo.architecture.ui.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apollo.architecture.model.api.ExceptionHandle
 import com.apollo.architecture.model.api.SimpleException
 import com.apollo.architecture.model.bean.BaseResponse
 import kotlinx.coroutines.CoroutineScope
@@ -69,7 +70,7 @@ open class BaseViewModel : ViewModel() {
             try {
                 success(block())
             } catch (e: Throwable) {
-                error(SimpleException(SimpleException.UNKNOWN_CODE, e.message))
+                error(ExceptionHandle.handleException(e))
             } finally {
                 complete()
             }

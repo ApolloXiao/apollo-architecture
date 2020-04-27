@@ -1,6 +1,5 @@
 package com.apollo.architecture.ui.main
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.apollo.architecture.model.bean.Article
 import com.apollo.architecture.model.repository.ArticleRepository
