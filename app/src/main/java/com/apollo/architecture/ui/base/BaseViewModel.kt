@@ -20,7 +20,7 @@ open class BaseViewModel : ViewModel() {
                 uiEvent.showErrorMsg.postValue(it.errorMessage)
             },
             complete: () -> Unit = {},
-            isShowDialog: Boolean = false
+            isShowDialog: Boolean = true
     ) {
         if (isShowDialog) uiEvent.showDialog.postValue(null)
         launchUI {
@@ -78,8 +78,8 @@ open class BaseViewModel : ViewModel() {
     }
 
     inner class UIEvent {
-        val showDialog by lazy { MutableLiveData<String>() }
-        val dismissDialog by lazy { MutableLiveData<Void>() }
-        val showErrorMsg by lazy { MutableLiveData<String>() }
+        val showDialog by lazy { MutableLiveData<String?>() }
+        val dismissDialog by lazy { MutableLiveData<Nothing?>() }
+        val showErrorMsg by lazy { MutableLiveData<String?>() }
     }
 }

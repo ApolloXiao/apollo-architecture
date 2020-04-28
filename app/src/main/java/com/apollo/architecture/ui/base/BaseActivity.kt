@@ -46,7 +46,7 @@ abstract class BaseActivity<VM : BaseViewModel>(userDataBinding: Boolean = false
         })
     }
 
-    private fun showLoading(msg: String) {
+    private fun showLoading(msg: String?) {
         //fixme UI待完善
         if (dialog == null) {
             dialog = Dialog(this)
