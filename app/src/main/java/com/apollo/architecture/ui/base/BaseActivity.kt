@@ -1,12 +1,17 @@
 package com.apollo.architecture.ui.base
 
 import android.app.Dialog
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
+import com.apollo.architecture.R
+import kotlinx.android.synthetic.main.dialog_loading.view.*
 
 abstract class BaseActivity<VM : BaseViewModel>(userDataBinding: Boolean = false) : AppCompatActivity() {
     private val _userDataBinding = userDataBinding
@@ -28,6 +33,11 @@ abstract class BaseActivity<VM : BaseViewModel>(userDataBinding: Boolean = false
         initData()
     }
 
+    override fun onDestroy() {
+        dismissLoading()
+        super.onDestroy()
+    }
+
     abstract fun getContentViewId(): Int
     abstract fun initViewModel(): VM
     abstract fun addLiveDataObserve()
@@ -47,14 +57,22 @@ abstract class BaseActivity<VM : BaseViewModel>(userDataBinding: Boolean = false
     }
 
     private fun showLoading(msg: String?) {
-        //fixme UI待完善
         if (dialog == null) {
             dialog = Dialog(this)
+            dialog?.run {
+                setCancelable(false)
+                setCanceledOnTouchOutside(false)
+                window?.setBackgroundDrawableResource(android.R.color.transparent)
+                val loadingView = layoutInflater.inflate(R.layout.dialog_loading, null)
+                loadingView.loading_text.text = msg?:"加载中..."
+                loadingView.loading_progress.indeterminateDrawable.colorFilter =
+                        PorterDuffColorFilter(
+                                ContextCompat.getColor(this.context, R.color.colorPrimaryDark),
+                                PorterDuff.Mode.MULTIPLY)
+                setContentView(loadingView)
+            }
         }
-        dialog?.setCanceledOnTouchOutside(false)
-        dialog?.setCancelable(false)
         dialog?.show()
-
     }
 
     private fun dismissLoading() {
